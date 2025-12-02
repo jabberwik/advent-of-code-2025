@@ -1,0 +1,53 @@
+[tools]
+dotnet = "10"
+
+[env]
+AOC_SESSION = { required = true }
+
+[tasks.fetch]
+alias = 'f'
+quiet = true
+description = "Download Advent of Code input for a given day"
+usage = '''
+arg "<day>" help="Day number"
+flag "--token <token>" env="AOC_SESSION"
+'''
+run = '''
+day="${usage_day:?}"
+token="${usage_token:?}"
+
+url="https://adventofcode.com/2025/day/$day/input"
+day_padded=$(printf "%02d" "$day")
+outdir="day-$day_padded"
+outfile="$outdir/input.txt"
+
+mkdir -p "$outdir"
+
+curl -sS "$url" -b "session=$token" -o "$outfile"
+echo "Downloaded input for day $day to $outfile"
+'''
+
+[tasks.test]
+alias = 't'
+quiet = true
+description = "Runs the test code for a given day"
+usage = '''
+arg "<day>" help="Day number"
+'''
+run = '''
+day="${usage_day:?}"
+day_padded=$(printf "%02d" "$day")
+dotnet test "day-$day_padded"
+'''
+
+[tasks.go]
+quiet = true
+description = "Runs the solution code for a given day"
+usage = '''
+arg "<day>" help="Day number"
+'''
+run = '''
+day="${usage_day:?}"
+day_padded=$(printf "%02d" "$day")
+dotnet run --project "day-$day_padded" -- "./day-$day_padded/input.txt"
+'''
