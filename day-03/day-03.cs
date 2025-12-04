@@ -25,7 +25,7 @@ public static class LinqExtensions
         where TElement : IComparable<TElement>
     {
         if (scale < 0) throw new ArgumentOutOfRangeException(nameof(scale), "Scale must be non-negative.");
-        if (scale == 0) return [];
+        if (scale == 0) return []; // Sort of a recursion base case
         
         var source = input.ToArray(); // Avoid multiple enumerations
         if (source.Length <= scale) return source;
@@ -40,7 +40,7 @@ public static class LinqExtensions
             if (item.CompareTo(buffer[0]) < 0) continue;
 
             // If the new item is greater than or equal to the most significant buffer item, we want to include it.
-            // We do this by placing it at the front of the buffer, and then removing the smallest item from the rest of the buffer.
+            // We do this by placing it at the front of the buffer, and then getting the largest sequence from the buffer elements.
             buffer = [item, ..buffer.FormLargestSequence(buffer.Length - 1)];
         }
         
