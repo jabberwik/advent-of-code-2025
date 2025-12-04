@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 namespace day_02.Tests;
 
 public class ProgramTests
