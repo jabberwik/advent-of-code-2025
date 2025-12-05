@@ -19,6 +19,9 @@ AOC_SESSION = "your-session-token"
 ## Tasks
 
 ```sh
+# Set up the project template for a day
+mise prep {day-no}
+
 # Fetch the input file for a given day
 mise fetch {day-no}
 

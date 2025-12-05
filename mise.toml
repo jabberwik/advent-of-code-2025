@@ -4,6 +4,31 @@ dotnet = "10"
 [env]
 AOC_SESSION = { required = true }
 
+[tasks.prep]
+quiet = true
+description = "Sets up a new day's project structure"
+usage = '''
+arg "<day>" help="Day number"
+'''
+run = '''
+day="${usage_day:?}"
+day_padded=$(printf "%02d" "$day")
+outdir="day-$day_padded"
+mkdir -p "$outdir"
+
+# Copy all files from template and rename them
+for file in .day-template/day-NN.*; do
+  filename=$(basename "$file")
+  newname="${filename/day-NN/day-$day_padded}"
+  cp "$file" "$outdir/$newname"
+  # Replace placeholders in each file (build placeholder to avoid Tera parsing)
+  sed -i "" "s/{""{DAY_PADDED}}/$day_padded/g" "$outdir/$newname"
+done
+
+dotnet sln add day-$day_padded
+echo "Created project structure for day $day in $outdir"
+'''
+
 [tasks.fetch]
 alias = 'f'
 quiet = true
