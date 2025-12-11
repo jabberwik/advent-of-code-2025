@@ -6,4 +6,5 @@
   <Project Path="day-05/day-05.csproj" />
   <Project Path="day-06/day-06.csproj" />
   <Project Path="day-07/day-07.csproj" />
+  <Project Path="day-08/day-08.csproj" />
 </Solution>
